@@ -73,6 +73,7 @@ namespace EldenRingArmorOptimizer {
 
         public MainWindow() {
             InitializeComponent();
+            //CheckForIllegalCrossThreadCalls = false; //Yeah that's how I fixed that, sue me
             comboBoxDesiredLd.SelectedIndex = 0;
             comboBoxPriority.SelectedIndex = 0;
             listViewResults.Items.Clear();
@@ -164,7 +165,12 @@ namespace EldenRingArmorOptimizer {
         private async void buttonStart_Click(object sender, EventArgs e) {
             progressBar1.Style = ProgressBarStyle.Marquee;
             progressBar1.MarqueeAnimationSpeed = 30;
-            var l = await Task.Run(searchStart);
+            int dL = comboBoxDesiredLd.SelectedIndex; // These might not be necessary
+            decimal wL = numericUpDownWgtLimit.Value; // But I put them in
+            decimal xW = numericUpDownExWeight.Value; // And then fixed other stuff
+            decimal mD = numericUpDownMaxDiff.Value;  // And I'm too scared to change it back
+            string pI = (string)comboBoxPriority.SelectedItem;
+            var l = await Task.Run(() => searchStart(dL, wL, xW, mD, pI));
             listViewResults.Items.Clear();
             foreach (var item in l) {
                 var list = listViewResults.Items.Add(item.helm);
@@ -182,7 +188,7 @@ namespace EldenRingArmorOptimizer {
             tabControl1.SelectedTab = tabControl1.TabPages[1];
         }
 
-        private List<Loadout> searchStart() {
+        private List<Loadout> searchStart(int desiredLoadIndex, decimal weightLimit, decimal extWeight, decimal maxDiff, string priority) {
             List<Equipment> helms = new List<Equipment>(0);
             List<Equipment> chests = new List<Equipment>(0);
             List<Equipment> gloves = new List<Equipment>(0);
@@ -207,7 +213,7 @@ namespace EldenRingArmorOptimizer {
             chests.Add(blank);
             gloves.Add(blank);
             legs.Add(blank);
-            Console.WriteLine($"[{DateTime.Now:HH:mm:ss:fff}] Sorting all items...");
+            //Console.WriteLine($"[{DateTime.Now:HH:mm:ss:fff}] Sorting all items...");
             foreach (var item in equipment) {
                 switch (item.type) {
                     case equipType.Chestpiece:
@@ -224,9 +230,9 @@ namespace EldenRingArmorOptimizer {
                         continue;
                 }
             }
-            Console.WriteLine($"[{DateTime.Now:HH:mm:ss:fff}] Finished sorting, starting search.");
+            //Console.WriteLine($"[{DateTime.Now:HH:mm:ss:fff}] Finished sorting, starting search.");
             decimal loadMult = -1;
-            switch (comboBoxDesiredLd.SelectedIndex) {
+            switch (desiredLoadIndex) {
                 case 0:
                     loadMult = 0.3m;
                     break;
@@ -237,28 +243,28 @@ namespace EldenRingArmorOptimizer {
                     loadMult = 1;
                     break;
             }
-            decimal weightLimit = numericUpDownWgtLimit.Value * loadMult;
-            decimal extWeight = numericUpDownExWeight.Value;
+            decimal totWeightLimit = weightLimit * loadMult;
             List<Loadout> finalEquipment = new List<Loadout>(0);
+            // Madness ahead...
             foreach (var helm in helms) {
                 decimal currWeight = helm.weight + extWeight;
                 if (loadMult > 0) {
-                    if (currWeight > weightLimit) continue;
+                    if (currWeight > totWeightLimit) continue;
                 }
                 foreach (var chest in chests) {
                     if (loadMult > 0) {
                         currWeight = helm.weight + chest.weight + extWeight;
-                        if (currWeight > weightLimit) continue;
+                        if (currWeight > totWeightLimit) continue;
                     }
                     foreach (var glove in gloves) {
                         if (loadMult > 0) {
                             currWeight = glove.weight + helm.weight + chest.weight + extWeight;
-                            if (currWeight > weightLimit) continue;
+                            if (currWeight > totWeightLimit) continue;
                         }
                         foreach (var leg in legs) {
                             if (loadMult > 0) {
                                 currWeight = leg.weight + glove.weight + helm.weight + chest.weight + extWeight;
-                                if (currWeight > weightLimit) continue;
+                                if (currWeight > totWeightLimit) continue;
                             }
                             finalEquipment.Add(new Loadout() {
                                 helm = helm.name,
@@ -286,10 +292,10 @@ namespace EldenRingArmorOptimizer {
             }
             decimal targetValue = 0;
             decimal currentValue;
-            Console.WriteLine($"[{DateTime.Now:HH:mm:ss:fff}] Collated all valid item combinations, now searching for optimal entries...");
+            //Console.WriteLine($"[{DateTime.Now:HH:mm:ss:fff}] Collated all valid item combinations, now searching for optimal entries...");
             loopStart:
             foreach (var item in finalEquipment) {
-                switch (comboBoxPriority.SelectedItem) {
+                switch (priority) {
                     case "Total Combined":
                         currentValue = item.fire + (item.focus / 10) + item.holy + (item.immunity / 10) + item.lightning + item.magic + item.physical + item.poise + (item.robustness / 10) + (item.vitality / 10) + item.vsPierce + item.vsSlash + item.vsStrike;
                         break;
@@ -349,13 +355,13 @@ namespace EldenRingArmorOptimizer {
                 }
                 item.score = currentValue;
                 if (currentValue > targetValue) targetValue = currentValue;
-                else if (currentValue < targetValue - numericUpDownMaxDiff.Value) {
+                else if (currentValue < targetValue - maxDiff) {
                     finalEquipment.Remove(item);
                     goto loopStart;
                 }
             }
             List<Loadout> sortedFinal = finalEquipment.OrderByDescending(o => o.score).ToList();
-            Console.WriteLine($"[{DateTime.Now:HH:mm:ss:fff}] Done.");
+            //Console.WriteLine($"[{DateTime.Now:HH:mm:ss:fff}] Done.");
             return sortedFinal;
         }
 
