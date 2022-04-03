@@ -51,29 +51,9 @@ namespace EldenRingArmorOptimizer {
             Close();
         }
 
-        /*private void button1_Click(object sender, EventArgs e) {
-            Random random = new Random();
-            MainWindow.equipType type = (MainWindow.equipType)random.Next(0, 4);
-            main.equipment.Add(new MainWindow.Equipment() {
-                name = "Randomized Item!",
-                type = type,
-                weight = (decimal)random.NextDouble() * 10,
-                physical = (decimal)random.NextDouble() * 10,
-                vsPierce = (decimal)random.NextDouble() * 10,
-                vsSlash = (decimal)random.NextDouble() * 10,
-                vsStrike = (decimal)random.NextDouble() * 10,
-                fire = (decimal)random.NextDouble() * 10,
-                focus = (decimal)random.NextDouble() * 10,
-                holy = (decimal)random.NextDouble() * 10,
-                immunity = (decimal)random.NextDouble() * 10,
-                lightning = (decimal)random.NextDouble() * 10,
-                magic = (decimal)random.NextDouble() * 10,
-                poise = (decimal)random.NextDouble() * 10,
-                robustness = (decimal)random.NextDouble() * 10,
-                vitality = (decimal)random.NextDouble() * 10
-            });
-            main.refreshList();
-            Close();
-        }*/
+        private void numericUpDown_Enter(object sender, EventArgs e) {
+            var upDown = (NumericUpDown)sender;
+            upDown.Select(0, upDown.Text.Length);
+        }
     }
 }

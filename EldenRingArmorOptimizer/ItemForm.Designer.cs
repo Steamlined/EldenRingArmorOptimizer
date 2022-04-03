@@ -153,7 +153,7 @@ namespace EldenRingArmorOptimizer {
             this.buttonAdd.Location = new System.Drawing.Point(83, 159);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(394, 38);
-            this.buttonAdd.TabIndex = 48;
+            this.buttonAdd.TabIndex = 15;
             this.buttonAdd.Text = "Add Equipment";
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
@@ -165,7 +165,8 @@ namespace EldenRingArmorOptimizer {
             this.numericUpDownPoise.Location = new System.Drawing.Point(403, 133);
             this.numericUpDownPoise.Name = "numericUpDownPoise";
             this.numericUpDownPoise.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownPoise.TabIndex = 46;
+            this.numericUpDownPoise.TabIndex = 14;
+            this.numericUpDownPoise.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // label10
             // 
@@ -185,7 +186,8 @@ namespace EldenRingArmorOptimizer {
             this.numericUpDownVital.Location = new System.Drawing.Point(403, 107);
             this.numericUpDownVital.Name = "numericUpDownVital";
             this.numericUpDownVital.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownVital.TabIndex = 44;
+            this.numericUpDownVital.TabIndex = 13;
+            this.numericUpDownVital.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // label28
             // 
@@ -205,7 +207,8 @@ namespace EldenRingArmorOptimizer {
             this.numericUpDownFocus.Location = new System.Drawing.Point(403, 81);
             this.numericUpDownFocus.Name = "numericUpDownFocus";
             this.numericUpDownFocus.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownFocus.TabIndex = 41;
+            this.numericUpDownFocus.TabIndex = 12;
+            this.numericUpDownFocus.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // label26
             // 
@@ -225,7 +228,8 @@ namespace EldenRingArmorOptimizer {
             this.numericUpDownRobust.Location = new System.Drawing.Point(403, 55);
             this.numericUpDownRobust.Name = "numericUpDownRobust";
             this.numericUpDownRobust.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownRobust.TabIndex = 38;
+            this.numericUpDownRobust.TabIndex = 11;
+            this.numericUpDownRobust.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // label24
             // 
@@ -245,7 +249,8 @@ namespace EldenRingArmorOptimizer {
             this.numericUpDownImmun.Location = new System.Drawing.Point(403, 29);
             this.numericUpDownImmun.Name = "numericUpDownImmun";
             this.numericUpDownImmun.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownImmun.TabIndex = 35;
+            this.numericUpDownImmun.TabIndex = 10;
+            this.numericUpDownImmun.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // label22
             // 
@@ -273,46 +278,76 @@ namespace EldenRingArmorOptimizer {
             // 
             this.numericUpDownWeight.DecimalPlaces = 3;
             this.numericUpDownWeight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownWeight.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownWeight.Location = new System.Drawing.Point(83, 3);
             this.numericUpDownWeight.Name = "numericUpDownWeight";
             this.numericUpDownWeight.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownWeight.TabIndex = 20;
+            this.numericUpDownWeight.TabIndex = 1;
+            this.numericUpDownWeight.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // numericUpDownHoly
             // 
             this.numericUpDownHoly.DecimalPlaces = 3;
             this.numericUpDownHoly.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownHoly.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownHoly.Location = new System.Drawing.Point(243, 107);
             this.numericUpDownHoly.Name = "numericUpDownHoly";
             this.numericUpDownHoly.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownHoly.TabIndex = 18;
+            this.numericUpDownHoly.TabIndex = 9;
+            this.numericUpDownHoly.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // numericUpDownLightn
             // 
             this.numericUpDownLightn.DecimalPlaces = 3;
             this.numericUpDownLightn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownLightn.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownLightn.Location = new System.Drawing.Point(243, 81);
             this.numericUpDownLightn.Name = "numericUpDownLightn";
             this.numericUpDownLightn.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownLightn.TabIndex = 17;
+            this.numericUpDownLightn.TabIndex = 8;
+            this.numericUpDownLightn.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // numericUpDownFire
             // 
             this.numericUpDownFire.DecimalPlaces = 3;
             this.numericUpDownFire.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownFire.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownFire.Location = new System.Drawing.Point(243, 55);
             this.numericUpDownFire.Name = "numericUpDownFire";
             this.numericUpDownFire.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownFire.TabIndex = 16;
+            this.numericUpDownFire.TabIndex = 7;
+            this.numericUpDownFire.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // numericUpDownMagic
             // 
             this.numericUpDownMagic.DecimalPlaces = 3;
             this.numericUpDownMagic.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownMagic.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownMagic.Location = new System.Drawing.Point(243, 29);
             this.numericUpDownMagic.Name = "numericUpDownMagic";
             this.numericUpDownMagic.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownMagic.TabIndex = 15;
+            this.numericUpDownMagic.TabIndex = 6;
+            this.numericUpDownMagic.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // label5
             // 
@@ -373,19 +408,31 @@ namespace EldenRingArmorOptimizer {
             // 
             this.numericUpDownPierce.DecimalPlaces = 3;
             this.numericUpDownPierce.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownPierce.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownPierce.Location = new System.Drawing.Point(83, 107);
             this.numericUpDownPierce.Name = "numericUpDownPierce";
             this.numericUpDownPierce.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownPierce.TabIndex = 7;
+            this.numericUpDownPierce.TabIndex = 5;
+            this.numericUpDownPierce.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // numericUpDownSlash
             // 
             this.numericUpDownSlash.DecimalPlaces = 3;
             this.numericUpDownSlash.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownSlash.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownSlash.Location = new System.Drawing.Point(83, 81);
             this.numericUpDownSlash.Name = "numericUpDownSlash";
             this.numericUpDownSlash.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownSlash.TabIndex = 5;
+            this.numericUpDownSlash.TabIndex = 4;
+            this.numericUpDownSlash.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // label3
             // 
@@ -402,10 +449,16 @@ namespace EldenRingArmorOptimizer {
             // 
             this.numericUpDownStrike.DecimalPlaces = 3;
             this.numericUpDownStrike.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownStrike.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownStrike.Location = new System.Drawing.Point(83, 55);
             this.numericUpDownStrike.Name = "numericUpDownStrike";
             this.numericUpDownStrike.Size = new System.Drawing.Size(74, 20);
             this.numericUpDownStrike.TabIndex = 3;
+            this.numericUpDownStrike.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // label2
             // 
@@ -433,10 +486,16 @@ namespace EldenRingArmorOptimizer {
             // 
             this.numericUpDownPhys.DecimalPlaces = 3;
             this.numericUpDownPhys.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownPhys.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownPhys.Location = new System.Drawing.Point(83, 29);
             this.numericUpDownPhys.Name = "numericUpDownPhys";
             this.numericUpDownPhys.Size = new System.Drawing.Size(74, 20);
-            this.numericUpDownPhys.TabIndex = 1;
+            this.numericUpDownPhys.TabIndex = 2;
+            this.numericUpDownPhys.Enter += new System.EventHandler(this.numericUpDown_Enter);
             // 
             // buttonCancel
             // 
@@ -444,7 +503,7 @@ namespace EldenRingArmorOptimizer {
             this.buttonCancel.Location = new System.Drawing.Point(3, 159);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(74, 38);
-            this.buttonCancel.TabIndex = 47;
+            this.buttonCancel.TabIndex = 16;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
@@ -456,7 +515,7 @@ namespace EldenRingArmorOptimizer {
             this.textBoxName.Location = new System.Drawing.Point(243, 3);
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(234, 20);
-            this.textBoxName.TabIndex = 50;
+            this.textBoxName.TabIndex = 0;
             // 
             // label12
             // 
@@ -483,7 +542,7 @@ namespace EldenRingArmorOptimizer {
             this.comboBoxType.Location = new System.Drawing.Point(163, 133);
             this.comboBoxType.Name = "comboBoxType";
             this.comboBoxType.Size = new System.Drawing.Size(154, 21);
-            this.comboBoxType.TabIndex = 52;
+            this.comboBoxType.TabIndex = 17;
             // 
             // ItemForm
             // 

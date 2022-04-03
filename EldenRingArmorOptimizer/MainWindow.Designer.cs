@@ -25,7 +25,7 @@ namespace EldenRingArmorOptimizer {
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem13 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "Blank Item",
             "Test",
             "#.#",
@@ -33,7 +33,7 @@ namespace EldenRingArmorOptimizer {
             "#.#",
             "#.#",
             "#.#"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem14 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "Blank Item",
             "#.#",
             "#.#",
@@ -187,9 +187,9 @@ namespace EldenRingArmorOptimizer {
             this.listViewEquipment.FullRowSelect = true;
             this.listViewEquipment.GridLines = true;
             this.listViewEquipment.HideSelection = false;
-            listViewItem13.StateImageIndex = 0;
+            listViewItem1.StateImageIndex = 0;
             this.listViewEquipment.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem13});
+            listViewItem1});
             this.listViewEquipment.Location = new System.Drawing.Point(3, 3);
             this.listViewEquipment.Name = "listViewEquipment";
             this.listViewEquipment.Size = new System.Drawing.Size(559, 201);
@@ -262,7 +262,7 @@ namespace EldenRingArmorOptimizer {
             this.listViewResults.GridLines = true;
             this.listViewResults.HideSelection = false;
             this.listViewResults.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem14});
+            listViewItem2});
             this.listViewResults.Location = new System.Drawing.Point(3, 3);
             this.listViewResults.Name = "listViewResults";
             this.listViewResults.Size = new System.Drawing.Size(559, 201);
@@ -364,6 +364,11 @@ namespace EldenRingArmorOptimizer {
             // 
             this.numericUpDownMaxDiff.DecimalPlaces = 3;
             this.numericUpDownMaxDiff.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownMaxDiff.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownMaxDiff.Location = new System.Drawing.Point(103, 107);
             this.numericUpDownMaxDiff.Maximum = new decimal(new int[] {
             99999,
@@ -396,6 +401,11 @@ namespace EldenRingArmorOptimizer {
             // 
             this.numericUpDownExWeight.DecimalPlaces = 3;
             this.numericUpDownExWeight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownExWeight.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownExWeight.Location = new System.Drawing.Point(103, 81);
             this.numericUpDownExWeight.Maximum = new decimal(new int[] {
             99999,
@@ -508,6 +518,11 @@ namespace EldenRingArmorOptimizer {
             // 
             this.numericUpDownWgtLimit.DecimalPlaces = 3;
             this.numericUpDownWgtLimit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownWgtLimit.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numericUpDownWgtLimit.Location = new System.Drawing.Point(103, 29);
             this.numericUpDownWgtLimit.Maximum = new decimal(new int[] {
             99999,
