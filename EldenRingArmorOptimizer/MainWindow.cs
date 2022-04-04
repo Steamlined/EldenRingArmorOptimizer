@@ -13,12 +13,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace EldenRingArmorOptimizer {
     public partial class MainWindow : Form {
 
-        
-
         ItemForm itemForm = new ItemForm();
         BinaryFormatter formatter = new BinaryFormatter();
         string saveFolder;
         string saveFile;
+        string prefFile;
 
         public enum equipType {
             Helmet,
@@ -29,7 +28,17 @@ namespace EldenRingArmorOptimizer {
         public equipType lastEquip;
 
         [Serializable]
+        public class SaveData {
+            public int priority;
+            public decimal weightLimit;
+            public int maxLoad;
+            public decimal extraWeight;
+            public decimal maxDifference;
+        };
+
+        [Serializable]
         public class Equipment {
+            public uint id;
             public string name;
             public equipType type;
             public decimal weight;
@@ -48,6 +57,7 @@ namespace EldenRingArmorOptimizer {
             public decimal poise;
         }
         public class Loadout {
+            public uint id;
             public string helm;
             public string chest;
             public string gloves;
@@ -73,50 +83,74 @@ namespace EldenRingArmorOptimizer {
 
         public MainWindow() {
             InitializeComponent();
-            //CheckForIllegalCrossThreadCalls = false; //Yeah that's how I fixed that, sue me
             comboBoxDesiredLd.SelectedIndex = 0;
             comboBoxPriority.SelectedIndex = 0;
             listViewResults.Items.Clear();
             listViewEquipment.Items.Clear();
             equipment = new List<Equipment>(0);
-            saveFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EldenRingArmorOptimizer";
+            saveFolder = AppDomain.CurrentDomain.BaseDirectory;
             saveFile = saveFolder + "\\equipment.dat";
-            loadEquipment();
+            prefFile = saveFolder + "\\prefs.dat";
+            loadData();
             refreshList(true);
             for (int i = 0; i < listViewEquipment.Items.Count; i++) {
                 listViewEquipment.Items[i].Checked = true;
             }
         }
 
-        private void saveEquipment() {
+        private void saveData(bool isPrefs = false) {
             FileStream file;
             if (!Directory.Exists(saveFolder)) Directory.CreateDirectory(saveFolder);
-            if (File.Exists(saveFile)) file = File.OpenWrite(saveFile);
-            else file = File.Create(saveFile);
-            formatter.Serialize(file, equipment);
+            if (isPrefs) {
+                if (File.Exists(prefFile)) file = File.OpenWrite(prefFile);
+                else file = File.Create(prefFile);
+                var data = new SaveData() {
+                    extraWeight = numericUpDownExWeight.Value,
+                    maxDifference = numericUpDownMaxDiff.Value,
+                    weightLimit = numericUpDownWgtLimit.Value,
+                    maxLoad = comboBoxDesiredLd.SelectedIndex,
+                    priority = comboBoxPriority.SelectedIndex
+                };
+                formatter.Serialize(file, data);
+            } else {
+                if (File.Exists(saveFile)) file = File.OpenWrite(saveFile);
+                else file = File.Create(saveFile);
+                formatter.Serialize(file, equipment);
+            }
             file.Close();
         }
 
-        private void loadEquipment() {
+        private void loadData() {
             FileStream file;
             if (File.Exists(saveFile)) file = File.OpenRead(saveFile);
             else return;
             equipment = (List<Equipment>)formatter.Deserialize(file);
             file.Close();
+            if (File.Exists(prefFile)) file = File.OpenRead(prefFile);
+            else return;
+            var data = (SaveData)formatter.Deserialize(file);
+            file.Close();
+            numericUpDownExWeight.Value = data.extraWeight;
+            numericUpDownMaxDiff.Value = data.maxDifference;
+            numericUpDownWgtLimit.Value = data.weightLimit;
+            comboBoxDesiredLd.SelectedIndex = data.maxLoad;
+            comboBoxPriority.SelectedIndex = data.priority;
         }
 
         public void refreshList(bool bypassSave = false) {
             listViewEquipment.Items.Clear();
-            foreach (var item in equipment) {
-                var list = listViewEquipment.Items.Add(item.name);
+            for (int i = 0; i < equipment.Count; i++) {
+                var item = equipment[i];
+                var list = listViewEquipment.Items.Add(item.id.ToString());
+                list.SubItems.Add(item.name);
                 list.SubItems.Add(item.type.ToString());
                 list.SubItems.Add(item.weight.ToString("0.0"));
                 list.SubItems.Add((item.physical + item.vsPierce + item.vsSlash + item.vsStrike).ToString("0.0"));
                 list.SubItems.Add((item.magic + item.fire + item.holy + item.lightning).ToString("0.0"));
-                list.SubItems.Add((item.vitality + item.focus + item.immunity + item.robustness).ToString("0.0"));
-                list.SubItems.Add(item.poise.ToString("0.0"));
+                list.SubItems.Add((item.vitality + item.focus + item.immunity + item.robustness).ToString("0"));
+                list.SubItems.Add(item.poise.ToString("0"));
             }
-            if (!bypassSave) saveEquipment();
+            if (!bypassSave) saveData();
         }
 
         private void initializeItemPopup() {
@@ -162,7 +196,12 @@ namespace EldenRingArmorOptimizer {
             refreshList();
         }
 
+        private void settingsChanged(object sender, EventArgs e) {
+            saveData(true);
+        }
+
         private async void buttonStart_Click(object sender, EventArgs e) {
+            buttonStart.Enabled = false;
             progressBar1.Style = ProgressBarStyle.Marquee;
             progressBar1.MarqueeAnimationSpeed = 30;
             int dL = comboBoxDesiredLd.SelectedIndex; // These might not be necessary
@@ -173,7 +212,8 @@ namespace EldenRingArmorOptimizer {
             var l = await Task.Run(() => searchStart(dL, wL, xW, mD, pI));
             listViewResults.Items.Clear();
             foreach (var item in l) {
-                var list = listViewResults.Items.Add(item.helm);
+                var list = listViewResults.Items.Add(item.id.ToString());
+                list.SubItems.Add(item.helm);
                 list.SubItems.Add(item.chest);
                 list.SubItems.Add(item.gloves);
                 list.SubItems.Add(item.legs);
@@ -181,11 +221,12 @@ namespace EldenRingArmorOptimizer {
                 list.SubItems.Add(item.weight.ToString("0.0"));
                 list.SubItems.Add((item.physical + item.vsPierce + item.vsSlash + item.vsStrike).ToString("0.0"));
                 list.SubItems.Add((item.magic + item.fire + item.holy + item.lightning).ToString("0.0"));
-                list.SubItems.Add((item.vitality + item.focus + item.immunity + item.robustness).ToString("0.0"));
-                list.SubItems.Add(item.poise.ToString("0.0"));
+                list.SubItems.Add((item.vitality + item.focus + item.immunity + item.robustness).ToString("0"));
+                list.SubItems.Add(item.poise.ToString("0"));
             }
             progressBar1.Style = ProgressBarStyle.Blocks;
             tabControl1.SelectedTab = tabControl1.TabPages[1];
+            buttonStart.Enabled = true;
         }
 
         private List<Loadout> searchStart(int desiredLoadIndex, decimal weightLimit, decimal extWeight, decimal maxDiff, string priority) {
@@ -361,6 +402,9 @@ namespace EldenRingArmorOptimizer {
                 }
             }
             List<Loadout> sortedFinal = finalEquipment.OrderByDescending(o => o.score).ToList();
+            for (int i = 0; i < sortedFinal.Count; i++) {
+                sortedFinal[i].id = (uint)i;
+            }
             //Console.WriteLine($"[{DateTime.Now:HH:mm:ss:fff}] Done.");
             return sortedFinal;
         }

@@ -24,6 +24,7 @@ namespace EldenRingArmorOptimizer {
 
         private void buttonAdd_Click(object sender, EventArgs e) {
             var equipment = new MainWindow.Equipment() {
+                id = (uint)main.equipment.Count,
                 name = textBoxName.Text,
                 type = (MainWindow.equipType)comboBoxType.SelectedIndex,
                 weight = numericUpDownWeight.Value,
@@ -48,6 +49,7 @@ namespace EldenRingArmorOptimizer {
             }
             main.lastEquip = equipment.type;
             main.refreshList();
+            main.listViewEquipment.Items[main.listViewEquipment.Items.Count - 1].EnsureVisible();
             Close();
         }
 
