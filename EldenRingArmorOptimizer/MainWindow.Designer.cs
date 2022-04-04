@@ -67,6 +67,9 @@ namespace EldenRingArmorOptimizer {
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.columnHeaderID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonSelectAll = new System.Windows.Forms.Button();
+            this.buttonDeselectAll = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageEquip.SuspendLayout();
@@ -76,6 +79,7 @@ namespace EldenRingArmorOptimizer {
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDiff)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownExWeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWgtLimit)).BeginInit();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -149,7 +153,7 @@ namespace EldenRingArmorOptimizer {
             // 
             // tabPageEquip
             // 
-            this.tabPageEquip.Controls.Add(this.listViewEquipment);
+            this.tabPageEquip.Controls.Add(this.tableLayoutPanel3);
             this.tabPageEquip.Location = new System.Drawing.Point(4, 22);
             this.tabPageEquip.Name = "tabPageEquip";
             this.tabPageEquip.Padding = new System.Windows.Forms.Padding(3);
@@ -162,6 +166,7 @@ namespace EldenRingArmorOptimizer {
             // 
             this.listViewEquipment.Activation = System.Windows.Forms.ItemActivation.TwoClick;
             this.listViewEquipment.AllowColumnReorder = true;
+            this.listViewEquipment.CheckBoxes = true;
             this.listViewEquipment.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderID,
             this.columnHeaderNam,
@@ -171,23 +176,26 @@ namespace EldenRingArmorOptimizer {
             this.columnHeaderMag,
             this.columnHeaderRes,
             this.columnHeaderPoi});
+            this.tableLayoutPanel3.SetColumnSpan(this.listViewEquipment, 3);
             this.listViewEquipment.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewEquipment.FullRowSelect = true;
             this.listViewEquipment.GridLines = true;
             this.listViewEquipment.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listViewEquipment.HideSelection = false;
-            this.listViewEquipment.Location = new System.Drawing.Point(3, 3);
+            this.listViewEquipment.Location = new System.Drawing.Point(0, 0);
+            this.listViewEquipment.Margin = new System.Windows.Forms.Padding(0);
             this.listViewEquipment.Name = "listViewEquipment";
-            this.listViewEquipment.Size = new System.Drawing.Size(552, 201);
+            this.listViewEquipment.Size = new System.Drawing.Size(552, 171);
             this.listViewEquipment.TabIndex = 0;
             this.listViewEquipment.UseCompatibleStateImageBehavior = false;
             this.listViewEquipment.View = System.Windows.Forms.View.Details;
             this.listViewEquipment.ItemActivate += new System.EventHandler(this.listView_Item_Click);
+            this.listViewEquipment.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewEquipment_ItemChecked);
             // 
             // columnHeaderNam
             // 
             this.columnHeaderNam.Text = "Name";
-            this.columnHeaderNam.Width = 217;
+            this.columnHeaderNam.Width = 194;
             // 
             // columnHeaderType
             // 
@@ -531,12 +539,52 @@ namespace EldenRingArmorOptimizer {
             // columnHeaderID
             // 
             this.columnHeaderID.Text = "ID";
-            this.columnHeaderID.Width = 28;
             // 
             // columnHeader5
             // 
             this.columnHeader5.Text = "ID";
             this.columnHeader5.Width = 28;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 3;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.buttonSelectAll, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.buttonDeselectAll, 1, 1);
+            this.tableLayoutPanel3.Controls.Add(this.listViewEquipment, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(552, 201);
+            this.tableLayoutPanel3.TabIndex = 1;
+            // 
+            // buttonSelectAll
+            // 
+            this.buttonSelectAll.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonSelectAll.Location = new System.Drawing.Point(3, 174);
+            this.buttonSelectAll.Name = "buttonSelectAll";
+            this.buttonSelectAll.Size = new System.Drawing.Size(74, 24);
+            this.buttonSelectAll.TabIndex = 1;
+            this.buttonSelectAll.Text = "Select All";
+            this.buttonSelectAll.UseVisualStyleBackColor = true;
+            this.buttonSelectAll.Click += new System.EventHandler(this.buttonSelectAll_Click);
+            // 
+            // buttonDeselectAll
+            // 
+            this.buttonDeselectAll.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonDeselectAll.Location = new System.Drawing.Point(83, 174);
+            this.buttonDeselectAll.Name = "buttonDeselectAll";
+            this.buttonDeselectAll.Size = new System.Drawing.Size(74, 24);
+            this.buttonDeselectAll.TabIndex = 2;
+            this.buttonDeselectAll.Text = "Deselect All";
+            this.buttonDeselectAll.UseVisualStyleBackColor = true;
+            this.buttonDeselectAll.Click += new System.EventHandler(this.buttonDeselectAll_Click);
             // 
             // MainWindow
             // 
@@ -556,6 +604,7 @@ namespace EldenRingArmorOptimizer {
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxDiff)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownExWeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWgtLimit)).EndInit();
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -604,6 +653,9 @@ namespace EldenRingArmorOptimizer {
         private System.Windows.Forms.ColumnHeader columnHeaderID;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         public System.Windows.Forms.ListView listViewEquipment;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Button buttonSelectAll;
+        private System.Windows.Forms.Button buttonDeselectAll;
     }
 }
 

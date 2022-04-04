@@ -39,6 +39,7 @@ namespace EldenRingArmorOptimizer {
         [Serializable]
         public class Equipment {
             public uint id;
+            public bool enabled = true;
             public string name;
             public equipType type;
             public decimal weight;
@@ -93,9 +94,6 @@ namespace EldenRingArmorOptimizer {
             prefFile = saveFolder + "\\prefs.dat";
             loadData();
             refreshList(true);
-            for (int i = 0; i < listViewEquipment.Items.Count; i++) {
-                listViewEquipment.Items[i].Checked = true;
-            }
         }
 
         private void saveData(bool isPrefs = false) {
@@ -141,7 +139,9 @@ namespace EldenRingArmorOptimizer {
             listViewEquipment.Items.Clear();
             for (int i = 0; i < equipment.Count; i++) {
                 var item = equipment[i];
+                item.id = (uint)i;
                 var list = listViewEquipment.Items.Add(item.id.ToString());
+                list.Checked = item.enabled;
                 list.SubItems.Add(item.name);
                 list.SubItems.Add(item.type.ToString());
                 list.SubItems.Add(item.weight.ToString("0.0"));
@@ -288,21 +288,25 @@ namespace EldenRingArmorOptimizer {
             List<Loadout> finalEquipment = new List<Loadout>(0);
             // Madness ahead...
             foreach (var helm in helms) {
+                if (!helm.enabled) continue;
                 decimal currWeight = helm.weight + extWeight;
                 if (loadMult > 0) {
                     if (currWeight > totWeightLimit) continue;
                 }
                 foreach (var chest in chests) {
+                    if (!chest.enabled) continue;
                     if (loadMult > 0) {
                         currWeight = helm.weight + chest.weight + extWeight;
                         if (currWeight > totWeightLimit) continue;
                     }
                     foreach (var glove in gloves) {
+                        if (!glove.enabled) continue;
                         if (loadMult > 0) {
                             currWeight = glove.weight + helm.weight + chest.weight + extWeight;
                             if (currWeight > totWeightLimit) continue;
                         }
                         foreach (var leg in legs) {
+                            if (!leg.enabled) continue;
                             if (loadMult > 0) {
                                 currWeight = leg.weight + glove.weight + helm.weight + chest.weight + extWeight;
                                 if (currWeight > totWeightLimit) continue;
@@ -409,5 +413,19 @@ namespace EldenRingArmorOptimizer {
             return sortedFinal;
         }
 
+        private void listViewEquipment_ItemChecked(object sender, ItemCheckedEventArgs e) {
+            if (listViewEquipment.Items.Count == 0) return;
+            var i = int.Parse(e.Item.Text);
+            equipment[i].enabled = e.Item.Checked;
+            //saveData();
+        }
+
+        private void buttonSelectAll_Click(object sender, EventArgs e) {
+            for (int i = 0; i < listViewEquipment.Items.Count; i++) listViewEquipment.Items[i].Checked = true;
+        }
+
+        private void buttonDeselectAll_Click(object sender, EventArgs e) {
+            for (int i = 0; i < listViewEquipment.Items.Count; i++) listViewEquipment.Items[i].Checked = false;
+        }
     }
 }

@@ -25,6 +25,7 @@ namespace EldenRingArmorOptimizer {
         private void buttonAdd_Click(object sender, EventArgs e) {
             var equipment = new MainWindow.Equipment() {
                 id = (uint)main.equipment.Count,
+                enabled = true,
                 name = textBoxName.Text,
                 type = (MainWindow.equipType)comboBoxType.SelectedIndex,
                 weight = numericUpDownWeight.Value,
